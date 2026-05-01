@@ -1,0 +1,203 @@
+{
+  "info": {
+    "name": "Profanity Filter Microservice",
+    "_postman_id": "profanity-filter-v1",
+    "description": "Complete API collection for testing the Profanity Filter Microservice. Start server with: node index.js",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "🟢 Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/health",
+          "host": ["{{baseUrl}}"],
+          "path": ["health"]
+        },
+        "description": "Check if the microservice is running"
+      },
+      "response": []
+    },
+    {
+      "name": "🔍 Check Text (Clean)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"text\": \"Hello bhai kya haal hai\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/check",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "check"]
+        },
+        "description": "Check if text contains profanity — clean text example"
+      },
+      "response": []
+    },
+    {
+      "name": "🔍 Check Text (Abusive)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"text\": \"tu chutiya hai\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/check",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "check"]
+        },
+        "description": "Check if text contains profanity — abusive text example"
+      },
+      "response": []
+    },
+    {
+      "name": "🧹 Clean Text",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"text\": \"tu gandu hai aur bkl bhi hai\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/clean",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "clean"]
+        },
+        "description": "Replace abusive words with *** in the text"
+      },
+      "response": []
+    },
+    {
+      "name": "✅ Validate Text (Allowed)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"text\": \"Yeh ek achha post hai bhai\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/validate",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "validate"]
+        },
+        "description": "Validate text before saving to DB — returns 200 if allowed"
+      },
+      "response": []
+    },
+    {
+      "name": "🚫 Validate Text (Blocked)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"text\": \"tu harami aur kamine hai\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/validate",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "validate"]
+        },
+        "description": "Validate text before saving to DB — returns 422 if blocked"
+      },
+      "response": []
+    },
+    {
+      "name": "➕ Add New Bad Words",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"words\": [\"nalayak\", \"bewakoof\", \"idiot\"]\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/words/add",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "words", "add"]
+        },
+        "description": "Add new abusive words to the filter list dynamically"
+      },
+      "response": []
+    },
+    {
+      "name": "➖ Remove Bad Words",
+      "request": {
+        "method": "DELETE",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"words\": [\"sala\", \"saala\"]\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/words/remove",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "words", "remove"]
+        },
+        "description": "Remove words from the filter list"
+      },
+      "response": []
+    },
+    {
+      "name": "📋 List All Banned Words",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/words",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "words"]
+        },
+        "description": "Get all currently banned words in the filter"
+      },
+      "response": []
+    },
+    {
+      "name": "❌ Test 404 Route",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/unknown",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "unknown"]
+        },
+        "description": "Test unknown route — should return 404"
+      },
+      "response": []
+    },
+    {
+      "name": "⚠️ Test Missing Body",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/check",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "check"]
+        },
+        "description": "Test validation — empty body should return 400 error"
+      },
+      "response": []
+    }
+  ]
+}
